@@ -1,0 +1,12 @@
+ul {
+	visibility: hidden;
+}
+
+li {
+	cursor: pointer;
+}
+
+
+#reset-btn {
+	visibility: hidden;
+}
