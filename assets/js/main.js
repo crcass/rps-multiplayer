@@ -24,7 +24,7 @@ let currentPlayers = [];
 
 let playerChoice = [];
 
-let winner;
+let winnerIndex;
 
 // reset function resets remote & local variables and updates DOM
 const reset = (() => {
@@ -37,13 +37,12 @@ const reset = (() => {
   winner = undefined;
   $('#player-one').empty();
   $('#player-two').empty();
-  $('ul').css('visibility', 'hidden');
-  $('#reset-btn').css('visibility', 'hidden');
   $('#player-name').removeAttr('disabled');
 });
 
 // database call that updates when any values are present or changed
 database.ref().on('value', function(snapshot) {
+  $('#reset-btn').css('visibility', 'hidden');
   playerOne = snapshot.val().playerOne;
   currentPlayers[0] = playerOne;
   $('#player-one').text(playerOne);
@@ -55,43 +54,60 @@ database.ref().on('value', function(snapshot) {
   playerTwoChoice = snapshot.val().playerTwoChoice;
   playerChoice[1] = playerTwoChoice;
 
+  // updates DOM dynamically on all connected browsers
+  if (playerOne === '') {
+    $('#p-one-list').css('visibility', 'hidden');
+  }
+  if (playerTwo != '') {
+    $('#p-one-list').css('visibility', 'visible');
+  }
+  if (playerOneChoice != '') {
+    $('#p-one-list').css('visibility', 'hidden');
+    $('#p-two-list').css('visibility', 'visible');
+  }
+  if (playerOneChoice != '' && playerTwoChoice != '') {
+    $('#p-two-list').css('visibility', 'hidden');
+  }
+
   // main game loop
-  if (playerChoice[0] === playerChoice[1] && playerChoice.includes('Rock' || 'Paper' || 'Scissors')) {
+  if (playerOneChoice === playerTwoChoice && (playerChoice.includes('Rock') ||
+    playerChoice.includes('Paper') || playerChoice.includes('Scissors'))) {
     console.log('DRAW!');
     $('#reset-btn').css('visibility', 'visible');
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Paper')) {
-    winner = playerChoice.indexOf('Paper');
+    winnerIndex = playerChoice.indexOf('Paper');
     $('#reset-btn').css('visibility', 'visible');
-    console.log(currentPlayers[winner] + ' wins!');
+    console.log(currentPlayers[winnerIndex] + ' wins!');
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Scissors')) {
-    winner = playerChoice.indexOf('Rock');
+    winnerIndex = playerChoice.indexOf('Rock');
     $('#reset-btn').css('visibility', 'visible');
-    console.log(currentPlayers[winner] + ' wins!');
+    console.log(currentPlayers[winnerIndex] + ' wins!');
   } else if (playerChoice.includes('Paper') && playerChoice.includes('Scissors')) {
-    winner = playerChoice.indexOf('Scissors');
+    winnerIndex = playerChoice.indexOf('Scissors');
     $('#reset-btn').css('visibility', 'visible');
-    console.log(currentPlayers[winner] + ' wins!');
+    console.log(currentPlayers[winnerIndex] + ' wins!');
   }
 }, function(errorObject) {
   console.log(errorObject.code);
 });
 
-// allows players to enter their names
+// allows players to enter their names and rejects any empty submissions
 $('#name-btn').on('click', (e) => {
   e.preventDefault();
-  if (playerOne === '') {
-    playerOne = $('#player-name').val();
+  inputVal = $('#player-name').val().trim();
+  if (inputVal === '') {
+    $('#player-name').attr('placeholder', 'Please enter your name');
+    return false;
+  } else if (playerOne === '') {
+    playerOne = inputVal;
     database.ref().child('playerOne').set(playerOne);
     console.log(`Player One is ${playerOne}`);
-    // $('#player-one').css('visibility', 'visible');
     $('#player-name').val('');
   } else if (playerTwo === '') {
-    playerTwo = $('#player-name').val();
+    playerTwo = inputVal;
     database.ref().child('playerTwo').set(playerTwo);
     console.log(`Player Two is ${playerTwo}`);
-    $('#player-name').attr('disabled', '');
-    $('#p-one-list').css('visibility', 'visible');
-    // $('#player-two').css('visibility', 'visible');
+    // $('#player-name').attr('disabled', '');
     $('#player-name').val('');
   }
 });
@@ -102,15 +118,14 @@ $('li').on('click', function() {
     playerOneChoice = $(this).text();
     database.ref().child('playerOneChoice').set(playerOneChoice);
     console.log(`${playerOne} chose ${playerOneChoice}`);
-    $('#p-one-list').css('visibility', 'hidden');
-    $('#p-two-list').css('visibility', 'visible');
   } else if (playerTwoChoice === '') {
     playerTwoChoice = $(this).text();
     database.ref().child('playerTwoChoice').set(playerTwoChoice);
     console.log(`${playerTwo} chose ${playerTwoChoice}`);
-    $('#p-two-list').css('visibility', 'hidden');
   }
 });
+
+// $(document).on('click', '#name-btn', emptyTextBox);
 
 // calls the reset function to start a new game
 $('#reset-btn').on('click', () => {
