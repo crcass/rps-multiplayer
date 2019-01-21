@@ -6,6 +6,9 @@ li {
 	cursor: pointer;
 }
 
+/*p {
+	visibility: hidden;
+}*/
 
 #reset-btn {
 	visibility: hidden;
