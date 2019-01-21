@@ -81,7 +81,6 @@ database.ref().on('value', (snapshot) => {
   // main game loop
   if (playerOneChoice === playerTwoChoice && (playerChoice.includes('Rock') ||
       playerChoice.includes('Paper') || playerChoice.includes('Scissors'))) {
-    console.log('DRAW!');
     $('#status').text('Tie game!');
     $('#reset-btn').css('visibility', 'visible');
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Paper')) {
@@ -91,7 +90,6 @@ database.ref().on('value', (snapshot) => {
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
     $('#p-one-weapon').text(playerOneChoice);
     $('#p-two-weapon').text(playerTwoChoice);
-    console.log(currentPlayers[winnerIndex] + ' wins!');
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Rock');
     loserIndex = playerChoice.indexOf('Scissors');
@@ -99,7 +97,6 @@ database.ref().on('value', (snapshot) => {
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
     $('#p-one-weapon').text(playerOneChoice);
     $('#p-two-weapon').text(playerTwoChoice);
-    console.log(currentPlayers[winnerIndex] + ' wins!');
   } else if (playerChoice.includes('Paper') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Scissors');
     loserIndex = playerChoice.indexOf('Paper');
@@ -107,7 +104,6 @@ database.ref().on('value', (snapshot) => {
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
     $('#p-one-weapon').text(playerOneChoice);
     $('#p-two-weapon').text(playerTwoChoice);
-    console.log(currentPlayers[winnerIndex] + ' wins!');
   }
 }, (errorObject) => {
   console.log(errorObject.code);
@@ -123,12 +119,10 @@ $('#name-btn').on('click', (e) => {
   } else if (playerOne === '') {
     playerOne = inputVal;
     database.ref().child('playerOne').set(playerOne);
-    console.log(`Player One is ${playerOne}`);
     $('#player-name').val('');
   } else if (playerTwo === '') {
     playerTwo = inputVal;
     database.ref().child('playerTwo').set(playerTwo);
-    console.log(`Player Two is ${playerTwo}`);
     $('#player-name').attr('disabled', '');
     $('#player-name').val('');
   }
@@ -139,11 +133,9 @@ $('li').on('click', function() {
   if (playerOneChoice === '') {
     playerOneChoice = $(this).text();
     database.ref().child('playerOneChoice').set(playerOneChoice);
-    console.log(`${playerOne} chose ${playerOneChoice}`);
   } else if (playerTwoChoice === '') {
     playerTwoChoice = $(this).text();
     database.ref().child('playerTwoChoice').set(playerTwoChoice);
-    console.log(`${playerTwo} chose ${playerTwoChoice}`);
   }
 });
 
