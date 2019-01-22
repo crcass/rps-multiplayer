@@ -1,57 +1,76 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>Rock, Paper, Scissors</title>
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
-<link rel="stylesheet" href="./assets/css/reset.css">
-<link rel="stylesheet" href="./assets/css/style.css">
 
 <body>
+    <div class="bg">
+        <div class="site-container">
+            <h1>Rock Paper Scissors</h1>
 
-    <form>
-        <input type="text" id="player-name">
-        <button type="submit" id="name-btn">Submit</button>
-    </form>
+            <form id="add-name">
+                <input type="text" id="player-name">
+                <button type="submit" id="name-btn">Submit</button>
+            </form>
+            <div class="game">
+                <h2 id="status"></h2>
+                <p id="player-one"></p>
+                <h3 id="p-one-weapon"></h3>
+                <ul class="choices" id="p-one-list">
+                    <li>Rock</li>
+                    <li>Paper</li>
+                    <li>Scissors</li>
+                </ul>
 
-    <h2 id="status"></h2>
-    <p id="player-one"></p>
-    <h3 id="p-one-weapon"></h3>
-    <ul class="choices" id="p-one-list">
-        <li>Rock</li>
-        <li>Paper</li>
-        <li>Scissors</li>
-    </ul>
+                <p id="player-two"></p>
+                <h3 id="p-two-weapon"></h3>
+                <ul class="choices" id="p-two-list">
+                    <li>Rock</li>
+                    <li>Paper</li>
+                    <li>Scissors</li>
+                </ul>
 
-    <p id="player-two"></p>
-    <h3 id="p-two-weapon"></h3>
-    <ul class="choices" id="p-two-list">
-        <li>Rock</li>
-        <li>Paper</li>
-        <li>Scissors</li>
-    </ul>
+                <button id="reset-btn">New Game</button>
+            </div>
+            <div id="chat">
+                <h3>Player Chat</h3>
+                <div id="chat-display">
+                </div>
+                <form>
+                    <input type="" name="" id="chat-input">
+                    <button type="submit" id="chat-btn">Submit</button>
+                </form>
+            </div>
 
-    <button id="reset-btn">New Game</button>
-
-    <div id="stat-div">
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Wins</th>
-                    <th>Losses</th>
-                </tr>
-            </thead>
-            <tbody id="stats">
-            </tbody>
-        </table>
+            <div id="stat-div">
+                <table>
+                    <h3>Stats</h3>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Wins</th>
+                            <th>Losses</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+    <footer>
+        <span><a href="https://crcass.github.io/bootstrap-portfolio/">Made with ♥︎ by Chris Cass</a></span>
+    </footer>
 
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-messaging.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="./assets/js/main.js"></script>
 </body>

@@ -6,10 +6,46 @@ li {
 	cursor: pointer;
 }
 
-/*p {
-	visibility: hidden;
-}*/
-
 #reset-btn {
 	visibility: hidden;
+}
+
+#chat-display {
+	height: 5rem;
+	width: 25rem;
+	border: 1px solid black;
+	overflow: scroll;
+	display: flex;
+    flex-direction: column;
+    flex-flow: column-reverse;
+}
+
+#chat-input, #chat-btn {
+	visibility: hidden;
+}
+
+footer {
+  background-color: rgba(64, 64, 64, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 2rem;
+  font-size: 0.75rem;
+  text-shadow: none;
+}
+
+footer span {
+  padding: 1rem;
+}
+
+footer a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+footer a:hover {
+  color: #F8B3FF;
 }

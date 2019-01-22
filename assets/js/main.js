@@ -12,6 +12,8 @@ firebase.initializeApp(config);
 // global variables
 const database = firebase.database();
 
+let timestamp = firebase.database.ServerValue.TIMESTAMP;
+
 let playerOne;
 
 let playerTwo;
@@ -36,25 +38,33 @@ let playerTwoWins = 0;
 
 let playerTwoLosses = 0;
 
+let chatName;
+
+let chatId = 0;
+
 // reset function resets remote & local variables and updates DOM
 const reset = (() => {
-  database.ref().child('playerOneChoice').set('');
-  database.ref().child('playerTwoChoice').set('');
   database.ref().child('playerOne').set('');
   database.ref().child('playerTwo').set('');
+  database.ref().child('playerOneChoice').set('');
+  database.ref().child('playerTwoChoice').set('');
   currentPlayers = [];
   playerChoice = [];
   winnerIndex = undefined;
   loserIndex = undefined;
   $('#player-one').empty();
   $('#player-two').empty();
-  $('#player-name').removeAttr('disabled');
+  $('#player-name').attr('visibility', 'hidden');
+  $('#name-btn').attr('visibility', 'hidden');
+  $('#chat-input').css('visibility', 'visible');
+  $('#chat-btn').css('visibility', 'visible');
 });
 
 // database call that updates when any values are present or changed
 database.ref().on('value', (snapshot) => {
   $('#reset-btn').css('visibility', 'hidden');
   $('#stats').empty();
+  $('#chat-display').empty();
   $('#p-one-weapon').empty();
   $('#p-two-weapon').empty();
   playerOne = snapshot.val().playerOne;
@@ -68,6 +78,8 @@ database.ref().on('value', (snapshot) => {
   playerTwoChoice = snapshot.val().playerTwoChoice;
   playerChoice[1] = playerTwoChoice;
   currentStats = snapshot.val().stats;
+  currentChat = snapshot.val().chat;
+  chatId = snapshot.val().chatId;
 
   // reads stats from server and displays them on the page 
   Object.keys(currentStats).forEach((item) => {
@@ -80,7 +92,12 @@ database.ref().on('value', (snapshot) => {
     statLosses.appendTo(row);
     $('#stats').append(row);
   })
-  
+
+  // reads chat messages from server and displays them on the page
+  Object.keys(currentChat).forEach((item) => {
+    let p = $("<p>").text(`${currentChat[item].sender}: ${currentChat[item].message}`);
+    $('#chat-display').prepend(p);
+  })
 
   // updates DOM dynamically on all connected browsers
   if (playerOne === '') {
@@ -100,6 +117,7 @@ database.ref().on('value', (snapshot) => {
   if (playerTwo != '') {
     $('#p-one-list').css('visibility', 'visible');
     $('#status').text(`${playerOne}, choose your weapon!`);
+    $('#add-name').css('visibility', 'hidden');
 
     // if player does not exist in thee database, they are created with 0 wins & losses
     if (!snapshot.child(`stats/${playerTwo}`).exists()) {
@@ -123,7 +141,7 @@ database.ref().on('value', (snapshot) => {
     $('#p-two-list').css('visibility', 'hidden');
   }
 
-  // main game loop
+  // this loop evaluated the players' input against each other
   if (playerOneChoice === playerTwoChoice && (playerChoice.includes('Rock') ||
       playerChoice.includes('Paper') || playerChoice.includes('Scissors'))) {
     $('#status').text('Tie game!');
@@ -164,11 +182,20 @@ $('#name-btn').on('click', (e) => {
   } else if (playerOne === '') {
     playerOne = inputVal;
     database.ref().child('playerOne').set(playerOne);
+    chatName = playerOne;
+    $('#player-name').attr('visibility', 'hidden');
+    $('#name-btn').attr('visibility', 'hidden');
+    $('#chat-input').css('visibility', 'visible');
+    $('#chat-btn').css('visibility', 'visible');
     $('#player-name').val('');
   } else if (playerTwo === '') {
     playerTwo = inputVal;
     database.ref().child('playerTwo').set(playerTwo);
-    $('#player-name').attr('disabled', '');
+    chatName = playerTwo;
+    $('#chat-input').css('visibility', 'visible');
+    $('#chat-btn').css('visibility', 'visible');
+    $('#player-name').attr('visibility', 'hidden');
+    $('#name-btn').attr('visibility', 'hidden');
     $('#player-name').val('');
   }
 });
@@ -192,6 +219,25 @@ $('li').on('click', function() {
       playerOneLosses++;
       database.ref(`stats/${currentPlayers[loserIndex]}`).child('losses').set(playerOneLosses);
     }
+  }
+});
+
+// adds messages to the 
+$('#chat-btn').on('click', (e) => {
+  e.preventDefault();
+  let chatMsg = $('#chat-input').val().trim();
+  if (chatMsg === '') {
+    $('#chat-input').attr('placeholder', 'Please enter a message');
+    return false;
+  } else {
+    $('#chat-input').val('');
+    chatId++;
+    database.ref().child('chatId').set(`${chatId}`);
+    database.ref().child(`chat/${chatId}`).set({
+      sender: chatName,
+      message: chatMsg,
+      timestamp: timestamp
+    });
   }
 });
 
