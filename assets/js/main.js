@@ -28,6 +28,14 @@ let winnerIndex;
 
 let loserIndex;
 
+let playerOneWins = 0;
+
+let playerOneLosses = 0;
+
+let playerTwoWins = 0;
+
+let playerTwoLosses = 0;
+
 // reset function resets remote & local variables and updates DOM
 const reset = (() => {
   database.ref().child('playerOneChoice').set('');
@@ -36,7 +44,8 @@ const reset = (() => {
   database.ref().child('playerTwo').set('');
   currentPlayers = [];
   playerChoice = [];
-  winner = undefined;
+  winnerIndex = undefined;
+  loserIndex = undefined;
   $('#player-one').empty();
   $('#player-two').empty();
   $('#player-name').removeAttr('disabled');
@@ -45,6 +54,7 @@ const reset = (() => {
 // database call that updates when any values are present or changed
 database.ref().on('value', (snapshot) => {
   $('#reset-btn').css('visibility', 'hidden');
+  $('#stats').empty();
   $('#p-one-weapon').empty();
   $('#p-two-weapon').empty();
   playerOne = snapshot.val().playerOne;
@@ -57,6 +67,20 @@ database.ref().on('value', (snapshot) => {
   playerChoice[0] = playerOneChoice;
   playerTwoChoice = snapshot.val().playerTwoChoice;
   playerChoice[1] = playerTwoChoice;
+  currentStats = snapshot.val().stats;
+
+  // reads stats from server and displays them on the page 
+  Object.keys(currentStats).forEach((item) => {
+    let row = $('<tr>');
+    let statName = $('<td>').text(item);
+    let statWins = $('<td>').text(currentStats[item].wins);
+    let statLosses = $('<td>').text(currentStats[item].losses);
+    statName.appendTo(row);
+    statWins.appendTo(row);
+    statLosses.appendTo(row);
+    $('#stats').append(row);
+  })
+  
 
   // updates DOM dynamically on all connected browsers
   if (playerOne === '') {
@@ -64,10 +88,31 @@ database.ref().on('value', (snapshot) => {
     $('#status').text('Player One, enter your name');
   } else if (playerOne != '') {
     $('#status').text('Player Two, enter your name');
+
+    // if player does not exist in thee database, they are created with 0 wins & losses
+    if (!snapshot.child(`stats/${playerOne}`).exists()) {
+      database.ref(`stats/${playerOne}/`).set({
+        wins: 0,
+        losses: 0
+      });
+    }
   }
   if (playerTwo != '') {
     $('#p-one-list').css('visibility', 'visible');
     $('#status').text(`${playerOne}, choose your weapon!`);
+
+    // if player does not exist in thee database, they are created with 0 wins & losses
+    if (!snapshot.child(`stats/${playerTwo}`).exists()) {
+      database.ref(`stats/${playerTwo}/`).set({
+        wins: 0,
+        losses: 0
+      });
+    }
+
+    playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
+    playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
+    playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
+    playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
   }
   if (playerOneChoice != '') {
     $('#p-one-list').css('visibility', 'hidden');
@@ -128,7 +173,7 @@ $('#name-btn').on('click', (e) => {
   }
 });
 
-// allows players to make their rock, paper, or scissors selection
+// allows players to make their rock, paper, or scissors selection and updates their stats
 $('li').on('click', function() {
   if (playerOneChoice === '') {
     playerOneChoice = $(this).text();
@@ -136,6 +181,17 @@ $('li').on('click', function() {
   } else if (playerTwoChoice === '') {
     playerTwoChoice = $(this).text();
     database.ref().child('playerTwoChoice').set(playerTwoChoice);
+    if (currentPlayers[winnerIndex] === playerOne) {
+      playerOneWins++;
+      database.ref(`stats/${currentPlayers[winnerIndex]}`).child('wins').set(playerOneWins);
+      playerTwoLosses++;
+      database.ref(`stats/${currentPlayers[loserIndex]}`).child('losses').set(playerTwoLosses);
+    } else if (currentPlayers[winnerIndex] === playerTwo) {
+      playerTwoWins++;
+      database.ref(`stats/${currentPlayers[winnerIndex]}`).child('wins').set(playerTwoWins);
+      playerOneLosses++;
+      database.ref(`stats/${currentPlayers[loserIndex]}`).child('losses').set(playerOneLosses);
+    }
   }
 });
 
