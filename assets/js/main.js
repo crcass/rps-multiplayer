@@ -9,6 +9,14 @@ const config = {
 };
 firebase.initializeApp(config);
 
+// function that automatically corrects user name case
+let titleCase = ((str) => {
+  console.log(str);
+  return str.toLowerCase().split(' ').map((word) => {
+    return (word.charAt(0).toUpperCase() + word.slice(1));
+  }).join(' ');
+});
+
 // global variables
 const database = firebase.database();
 
@@ -42,7 +50,7 @@ let chatName;
 
 let chatId = 0;
 
-// reset function resets remote & local variables and updates DOM
+// resets remote & local variables and updates DOM
 const reset = (() => {
   database.ref().child('playerOne').set('');
   database.ref().child('playerTwo').set('');
@@ -54,19 +62,19 @@ const reset = (() => {
   loserIndex = undefined;
   $('#player-one').empty();
   $('#player-two').empty();
-  $('#player-name').attr('visibility', 'hidden');
-  $('#name-btn').attr('visibility', 'hidden');
-  $('#chat-input').css('visibility', 'visible');
-  $('#chat-btn').css('visibility', 'visible');
+  $('#add-name').css('visibility', 'visible');
 });
 
 // database call that updates when any values are present or changed
 database.ref().on('value', (snapshot) => {
   $('#reset-btn').css('visibility', 'hidden');
+  $('#chat-status').text('waiting for players');
+  $('#chat-status').css('color', '#FFF306');
+  $('#chat-form').css('visibility', 'hidden');
   $('#stats').empty();
   $('#chat-display').empty();
-  $('#p-one-weapon').empty();
-  $('#p-two-weapon').empty();
+  // $('#p-one-weapon').empty();
+  // $('#p-two-weapon').empty();
   playerOne = snapshot.val().playerOne;
   currentPlayers[0] = playerOne;
   $('#player-one').text(playerOne);
@@ -103,6 +111,7 @@ database.ref().on('value', (snapshot) => {
   if (playerOne === '') {
     $('#p-one-list').css('visibility', 'hidden');
     $('#status').text('Player One, enter your name');
+    $('#add-name').css('visibility', 'visible');
   } else if (playerOne != '') {
     $('#status').text('Player Two, enter your name');
 
@@ -118,6 +127,9 @@ database.ref().on('value', (snapshot) => {
     $('#p-one-list').css('visibility', 'visible');
     $('#status').text(`${playerOne}, choose your weapon!`);
     $('#add-name').css('visibility', 'hidden');
+    $('#chat-form').css('visibility', 'visible');
+    $('#chat-status').text('connected');
+    $('#chat-status').css('color', '#53F377');
 
     // if player does not exist in thee database, they are created with 0 wins & losses
     if (!snapshot.child(`stats/${playerTwo}`).exists()) {
@@ -151,22 +163,22 @@ database.ref().on('value', (snapshot) => {
     loserIndex = playerChoice.indexOf('Rock');
     $('#reset-btn').css('visibility', 'visible');
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
-    $('#p-one-weapon').text(playerOneChoice);
-    $('#p-two-weapon').text(playerTwoChoice);
+    // $('#p-one-weapon').text(playerOneChoice);
+    // $('#p-two-weapon').text(playerTwoChoice);
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Rock');
     loserIndex = playerChoice.indexOf('Scissors');
     $('#reset-btn').css('visibility', 'visible');
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
-    $('#p-one-weapon').text(playerOneChoice);
-    $('#p-two-weapon').text(playerTwoChoice);
+    // $('#p-one-weapon').text(playerOneChoice);
+    // $('#p-two-weapon').text(playerTwoChoice);
   } else if (playerChoice.includes('Paper') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Scissors');
     loserIndex = playerChoice.indexOf('Paper');
     $('#reset-btn').css('visibility', 'visible');
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
-    $('#p-one-weapon').text(playerOneChoice);
-    $('#p-two-weapon').text(playerTwoChoice);
+    // $('#p-one-weapon').text(playerOneChoice);
+    // $('#p-two-weapon').text(playerTwoChoice);
   }
 }, (errorObject) => {
   console.log(errorObject.code);
@@ -180,22 +192,17 @@ $('#name-btn').on('click', (e) => {
     $('#player-name').attr('placeholder', 'Please enter your name');
     return false;
   } else if (playerOne === '') {
-    playerOne = inputVal;
+    // titleCase(inputVal);
+    playerOne = titleCase(inputVal);
     database.ref().child('playerOne').set(playerOne);
     chatName = playerOne;
-    $('#player-name').attr('visibility', 'hidden');
-    $('#name-btn').attr('visibility', 'hidden');
-    $('#chat-input').css('visibility', 'visible');
-    $('#chat-btn').css('visibility', 'visible');
+    $('#add-name').attr('visibility', 'hidden');
     $('#player-name').val('');
   } else if (playerTwo === '') {
-    playerTwo = inputVal;
+    playerTwo = titleCase(inputVal);
     database.ref().child('playerTwo').set(playerTwo);
     chatName = playerTwo;
-    $('#chat-input').css('visibility', 'visible');
-    $('#chat-btn').css('visibility', 'visible');
-    $('#player-name').attr('visibility', 'hidden');
-    $('#name-btn').attr('visibility', 'hidden');
+    $('#add-name').attr('visibility', 'hidden');
     $('#player-name').val('');
   }
 });
@@ -203,10 +210,10 @@ $('#name-btn').on('click', (e) => {
 // allows players to make their rock, paper, or scissors selection and updates their stats
 $('li').on('click', function() {
   if (playerOneChoice === '') {
-    playerOneChoice = $(this).text();
+    playerOneChoice = $(this).attr('value');
     database.ref().child('playerOneChoice').set(playerOneChoice);
   } else if (playerTwoChoice === '') {
-    playerTwoChoice = $(this).text();
+    playerTwoChoice = $(this).attr('value');
     database.ref().child('playerTwoChoice').set(playerTwoChoice);
     if (currentPlayers[winnerIndex] === playerOne) {
       playerOneWins++;
@@ -222,7 +229,7 @@ $('li').on('click', function() {
   }
 });
 
-// adds messages to the 
+// adds messages to the chat
 $('#chat-btn').on('click', (e) => {
   e.preventDefault();
   let chatMsg = $('#chat-input').val().trim();

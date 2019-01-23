@@ -1,3 +1,69 @@
+@font-face {
+  font-family: 'Ailerons';
+  src: url('../../assets/fonts/Ailerons-Regular.otf') format('opentype');
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Oxygen', sans-serif;
+}
+
+.bg {
+  background-image: url(../../assets/images/rps.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.site-container {
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  font-family: Ailerons, sans-serif;
+  font-size: 5.5rem;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+#player-name {
+  background: 0;
+  border: 0;
+  border-bottom: 1px solid black;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 8rem;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player p {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin: 0.25rem;
+  min-height: 1.25rem;
+}
+
 ul {
 	visibility: hidden;
 }
@@ -6,8 +72,28 @@ li {
 	cursor: pointer;
 }
 
-#reset-btn {
+.img-div {
+  width: 8rem;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+#results-div {
 	visibility: hidden;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 8rem;
+  color: #E5E5E5;
+}
+
+#chat {
+  text-align: left;
 }
 
 #chat-display {
@@ -16,12 +102,47 @@ li {
 	border: 1px solid black;
 	overflow: scroll;
 	display: flex;
-    flex-direction: column;
-    flex-flow: column-reverse;
+  flex-direction: column;
+  flex-flow: column-reverse;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 0.5rem 0;
 }
 
-#chat-input, #chat-btn {
+#chat-display p {
+  margin: 0.25rem 0.5rem;
+}
+
+#chat-form {
 	visibility: hidden;
+}
+
+#chat-input {
+  width: 78%;
+}
+
+#chat-input {
+  border: 1px solid black;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+#stat-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 1rem 0.25rem;
+  margin: 0.5rem 0;
+}
+
+th {
+  font-weight: bold;
+}
+
+td {
+  width: 4rem;
 }
 
 footer {
@@ -35,6 +156,7 @@ footer {
   height: 2rem;
   font-size: 0.75rem;
   text-shadow: none;
+  color: #fff;
 }
 
 footer span {

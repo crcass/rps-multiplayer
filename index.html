@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <title>Rock, Paper, Scissors</title>
+    <link href="https://fonts.googleapis.com/css?family=Oxygen:400,700" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
@@ -13,54 +14,83 @@
     <div class="bg">
         <div class="site-container">
             <h1>Rock Paper Scissors</h1>
-
-            <form id="add-name">
-                <input type="text" id="player-name">
-                <button type="submit" id="name-btn">Submit</button>
-            </form>
+            <h2 id="status"></h2>
             <div class="game">
-                <h2 id="status"></h2>
-                <p id="player-one"></p>
-                <h3 id="p-one-weapon"></h3>
-                <ul class="choices" id="p-one-list">
-                    <li>Rock</li>
-                    <li>Paper</li>
-                    <li>Scissors</li>
-                </ul>
-
-                <p id="player-two"></p>
-                <h3 id="p-two-weapon"></h3>
-                <ul class="choices" id="p-two-list">
-                    <li>Rock</li>
-                    <li>Paper</li>
-                    <li>Scissors</li>
-                </ul>
-
-                <button id="reset-btn">New Game</button>
-            </div>
-            <div id="chat">
-                <h3>Player Chat</h3>
-                <div id="chat-display">
+                <div class="player" id="p1-div">
+                    <p id="player-one">Player One</p>
+                    <ul class="choices" id="p-one-list">
+                        <li value="Rock">
+                            <div class="img-div">
+                                <img src="./assets/images/p1r.png">
+                            </div>
+                        </li>
+                        <li value="Paper">
+                            <div class="img-div">
+                                <img src="./assets/images/p1p.png">
+                            </div>
+                        </li>
+                        <li value="Scissors">
+                            <div class="img-div">
+                                <img src="./assets/images/p1s.png">
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <form>
-                    <input type="" name="" id="chat-input">
-                    <button type="submit" id="chat-btn">Submit</button>
-                </form>
+                <div id="winner-img">
+                    <form id="add-name">
+                        <input type="text" id="player-name">
+                        <button type="submit" id="name-btn">Submit</button>
+                    </form>
+                    <img src="">
+                    <button id="reset-btn">New Game</button>
+                </div>
+                <div class="player" id="p2-div">
+                    <p id="player-two">Player Two</p>
+                    <ul class="choices" id="p-two-list">
+                        <li value="Rock">
+                            <div class="img-div">
+                                <img src="./assets/images/p2r.png">
+                            </div>
+                        </li>
+                        <li value="Paper">
+                            <div class="img-div">
+                                <img src="./assets/images/p2p.png">
+                            </div>
+                        </li>
+                        <li value="Scissors">
+                            <div class="img-div">
+                                <img src="./assets/images/p2s.png">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
+            <div class="bottom">
+                <div id="chat">
+                    <h3>Player Chat - <span id="chat-status">waiting for players</span></h3>
+                    <div id="chat-display">
+                    </div>
+                    <form id="chat-form">
+                        <input type="" name="" id="chat-input">
+                        <button type="submit" id="chat-btn">Submit</button>
+                    </form>
+                </div>
 
-            <div id="stat-div">
-                <table>
-                    <h3>Stats</h3>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Wins</th>
-                            <th>Losses</th>
-                        </tr>
-                    </thead>
-                    <tbody id="stats">
-                    </tbody>
-                </table>
+                <div id="stat-div">
+                    <table>
+                        <h3>Statistics</h3>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Wins</th>
+                                <th>Losses</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stats">
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
