@@ -20,45 +20,50 @@
                 <div class="player" id="p1-div">
                     <p id="player-one">Player One</p>
                     <ul class="choices" id="p-one-list">
-                        <li value="Rock">
+                        <li value="Rock" img="./assets/images/p1r.png">
                             <div class="img-div">
                                 <img src="./assets/images/p1r.png">
                             </div>
                         </li>
-                        <li value="Paper">
+                        <li value="Paper" img="./assets/images/p1p.png">
                             <div class="img-div">
                                 <img src="./assets/images/p1p.png">
                             </div>
                         </li>
-                        <li value="Scissors">
+                        <li value="Scissors" img="./assets/images/p1s.png">
                             <div class="img-div">
                                 <img src="./assets/images/p1s.png">
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div id="winner-img">
+                <div id="results">
                     <form id="add-name">
                         <input type="text" id="player-name">
                         <button type="submit" id="name-btn">Submit</button>
                     </form>
-                    <img src="">
+                    <div class="img-div">
+                        <img src="" id="winner-img">
+                    </div>
+                    <div class="img-div">
+                        <img src="" id="loser-img">
+                    </div>
                     <button id="reset-btn">New Game</button>
                 </div>
                 <div class="player" id="p2-div">
                     <p id="player-two">Player Two</p>
                     <ul class="choices" id="p-two-list">
-                        <li value="Rock">
+                        <li value="Rock" img="./assets/images/p2r.png">
                             <div class="img-div">
                                 <img src="./assets/images/p2r.png">
                             </div>
                         </li>
-                        <li value="Paper">
+                        <li value="Paper" img="./assets/images/p2p.png">
                             <div class="img-div">
                                 <img src="./assets/images/p2p.png">
                             </div>
                         </li>
-                        <li value="Scissors">
+                        <li value="Scissors" img="./assets/images/p2s.png">
                             <div class="img-div">
                                 <img src="./assets/images/p2s.png">
                             </div>
@@ -78,8 +83,8 @@
                 </div>
 
                 <div id="stat-div">
+                    <h3>Statistics</h3>
                     <table>
-                        <h3>Statistics</h3>
                         <thead>
                             <tr>
                                 <th>Name</th>

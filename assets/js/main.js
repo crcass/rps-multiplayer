@@ -30,9 +30,15 @@ let playerOneChoice;
 
 let playerTwoChoice;
 
+let playerOneImg;
+
+let playerTwoImg;
+
 let currentPlayers = [];
 
 let playerChoice = [];
+
+let currentImg = [];
 
 let winnerIndex;
 
@@ -56,8 +62,11 @@ const reset = (() => {
   database.ref().child('playerTwo').set('');
   database.ref().child('playerOneChoice').set('');
   database.ref().child('playerTwoChoice').set('');
+  database.ref().child('playerOneImg').set('');
+  database.ref().child('playerTwoImg').set('');
   currentPlayers = [];
   playerChoice = [];
+  currentImg = [];
   winnerIndex = undefined;
   loserIndex = undefined;
   $('#player-one').empty();
@@ -73,14 +82,18 @@ database.ref().on('value', (snapshot) => {
   $('#chat-form').css('visibility', 'hidden');
   $('#stats').empty();
   $('#chat-display').empty();
+  $('#winner-img').attr('src', '');
+  $('#loser-img').attr('src', '');
   // $('#p-one-weapon').empty();
   // $('#p-two-weapon').empty();
   playerOne = snapshot.val().playerOne;
   currentPlayers[0] = playerOne;
   $('#player-one').text(playerOne);
+  currentImg[0] = snapshot.val().playerOneImg;
   playerTwo = snapshot.val().playerTwo;
   currentPlayers[1] = playerTwo;
   $('#player-two').text(playerTwo);
+  currentImg[1] = snapshot.val().playerTwoImg;
   playerOneChoice = snapshot.val().playerOneChoice;
   playerChoice[0] = playerOneChoice;
   playerTwoChoice = snapshot.val().playerTwoChoice;
@@ -158,27 +171,30 @@ database.ref().on('value', (snapshot) => {
       playerChoice.includes('Paper') || playerChoice.includes('Scissors'))) {
     $('#status').text('Tie game!');
     $('#reset-btn').css('visibility', 'visible');
+    $('#winner-img').attr('src', currentImg[0]);
+    $('#loser-img').attr('src', currentImg[1]);
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Paper')) {
     winnerIndex = playerChoice.indexOf('Paper');
     loserIndex = playerChoice.indexOf('Rock');
     $('#reset-btn').css('visibility', 'visible');
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
-    // $('#p-one-weapon').text(playerOneChoice);
-    // $('#p-two-weapon').text(playerTwoChoice);
+    $('#winner-img').attr('src', currentImg[winnerIndex]);
+    $('#loser-img').attr('src', currentImg[loserIndex]);
+    $('#loser-img').text(playerTwoChoice);
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Rock');
     loserIndex = playerChoice.indexOf('Scissors');
     $('#reset-btn').css('visibility', 'visible');
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
-    // $('#p-one-weapon').text(playerOneChoice);
-    // $('#p-two-weapon').text(playerTwoChoice);
+    $('#winner-img').attr('src', currentImg[winnerIndex]);
+    $('#loser-img').attr('src', currentImg[loserIndex]);
   } else if (playerChoice.includes('Paper') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Scissors');
     loserIndex = playerChoice.indexOf('Paper');
     $('#reset-btn').css('visibility', 'visible');
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
-    // $('#p-one-weapon').text(playerOneChoice);
-    // $('#p-two-weapon').text(playerTwoChoice);
+    $('#winner-img').attr('src', currentImg[winnerIndex]);
+    $('#loser-img').attr('src', currentImg[loserIndex]);
   }
 }, (errorObject) => {
   console.log(errorObject.code);
@@ -212,9 +228,13 @@ $('li').on('click', function() {
   if (playerOneChoice === '') {
     playerOneChoice = $(this).attr('value');
     database.ref().child('playerOneChoice').set(playerOneChoice);
+    playerOneImg = $(this).attr('img');
+    database.ref().child('playerOneImg').set(playerOneImg);
   } else if (playerTwoChoice === '') {
     playerTwoChoice = $(this).attr('value');
     database.ref().child('playerTwoChoice').set(playerTwoChoice);
+    playerTwoImg = $(this).attr('img');
+    database.ref().child('playerTwoImg').set(playerTwoImg);
     if (currentPlayers[winnerIndex] === playerOne) {
       playerOneWins++;
       database.ref(`stats/${currentPlayers[winnerIndex]}`).child('wins').set(playerOneWins);
