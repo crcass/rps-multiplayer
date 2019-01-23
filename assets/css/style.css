@@ -81,8 +81,29 @@ img {
   height: auto;
 }
 
-#results-div {
+#add-name {
+  margin: 0.5rem;
+}
+
+#player-name {
+  font-size: 1.25rem;
+}
+
+#name-btn {
+  font-size: 1rem;
+  color: #fff;
+  padding: 0.25rem;
+  background-color: #B4296D;
+  border-color: #B4296D;
+}
+
+#reset-btn {
 	visibility: hidden;
+  font-size: 1rem;
+  color: #fff;
+  padding: 0.25rem;
+  background-color: #B4296D;
+  border-color: #B4296D;
 }
 
 .bottom {
@@ -123,6 +144,15 @@ img {
 #chat-input {
   border: 1px solid black;
   background-color: rgba(0, 0, 0, 0.2);
+}
+
+#chat-btn {
+  border-radius: 50%;
+  height: 1.5rem;
+  width: 1.5rem;
+  color: #fff;
+  background-color: #58B2F5;
+  border-color: #58B2F5;
 }
 
 #stat-div {
