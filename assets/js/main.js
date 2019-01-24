@@ -112,10 +112,7 @@ database.ref().on('value', (snapshot) => {
     $('#add-name').css('visibility', 'visible');
   } else if (playerOne != '') {
     $('#status').text('Player Two, enter your name');
-    playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
-    playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
-    $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
-
+    
     // if player does not exist in thee database, they are created with 0 wins & losses
     if (!snapshot.child(`stats/${playerOne}`).exists()) {
       database.ref(`stats/${playerOne}/`).set({
@@ -123,17 +120,15 @@ database.ref().on('value', (snapshot) => {
         losses: 0
       });
     }
+    playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
+    playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
+    $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
+
+    
   }
   if (playerTwo != '') {
     $('#p-one-list').css('visibility', 'visible');
     $('#status').text(`${playerOne}, choose your weapon!`);
-    playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
-    playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
-    $('#player-two-stats').text(`Wins: ${playerTwoWins} - Losses: ${playerTwoLosses}`);
-    $('#add-name').css('visibility', 'hidden');
-    $('#chat-form').css('visibility', 'visible');
-    $('#chat-status').text('connected');
-    $('#chat-status').css('color', '#53F377');
 
     // if player does not exist in thee database, they are created with 0 wins & losses
     if (!snapshot.child(`stats/${playerTwo}`).exists()) {
@@ -142,6 +137,13 @@ database.ref().on('value', (snapshot) => {
         losses: 0
       });
     }
+    playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
+    playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
+    $('#player-two-stats').text(`Wins: ${playerTwoWins} - Losses: ${playerTwoLosses}`);
+    $('#add-name').css('visibility', 'hidden');
+    $('#chat-form').css('visibility', 'visible');
+    $('#chat-status').text('connected');
+    $('#chat-status').css('color', '#53F377');
   }
   if (playerOneChoice != '') {
     $('#p-one-list').css('visibility', 'hidden');
