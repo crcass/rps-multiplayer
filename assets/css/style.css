@@ -50,13 +50,14 @@ h3 {
 .game {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 5rem;
 }
 
 .player {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 36.875rem;
+  width: 25.125rem;
 }
 
 .player p {
@@ -91,6 +92,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 #add-name {
@@ -131,15 +133,11 @@ button {
   background-color: #6CC9FA;
 }
 
-.bottom {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 8rem;
-  color: #F0F0F1;
-}
-
 #chat {
   text-align: left;
+  color: #F0F0F1;
+  position: absolute;
+  bottom: 3rem;
 }
 
 #chat-display {
@@ -163,12 +161,9 @@ button {
 }
 
 #chat-input {
-  width: 85%;
-}
-
-#chat-input {
   border: 1px solid black;
   background-color: rgba(0, 0, 0, 0.2);
+    width: 91%;
 }
 
 #chat-btn {
@@ -188,20 +183,6 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-table {
-  border-collapse: separate;
-  border-spacing: 1rem 0.25rem;
-  margin: 0.5rem 0;
-}
-
-th {
-  font-weight: bold;
-}
-
-td {
-  width: 4rem;
 }
 
 footer {
