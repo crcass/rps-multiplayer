@@ -80,12 +80,10 @@ database.ref().on('value', (snapshot) => {
   $('#chat-status').text('waiting for players');
   $('#chat-status').css('color', '#FFF306');
   $('#chat-form').css('visibility', 'hidden');
-  $('#stats').empty();
+  $('.stats').empty();
   $('#chat-display').empty();
   $('#winner-img').attr('src', '');
   $('#loser-img').attr('src', '');
-  // $('#p-one-weapon').empty();
-  // $('#p-two-weapon').empty();
   playerOne = snapshot.val().playerOne;
   currentPlayers[0] = playerOne;
   $('#player-one').text(playerOne);
@@ -101,18 +99,6 @@ database.ref().on('value', (snapshot) => {
   currentStats = snapshot.val().stats;
   currentChat = snapshot.val().chat;
   chatId = snapshot.val().chatId;
-
-  // reads stats from server and displays them on the page 
-  Object.keys(currentStats).forEach((item) => {
-    let row = $('<tr>');
-    let statName = $('<td>').text(item);
-    let statWins = $('<td>').text(currentStats[item].wins);
-    let statLosses = $('<td>').text(currentStats[item].losses);
-    statName.appendTo(row);
-    statWins.appendTo(row);
-    statLosses.appendTo(row);
-    $('#stats').append(row);
-  })
 
   // reads chat messages from server and displays them on the page
   Object.keys(currentChat).forEach((item) => {
@@ -156,6 +142,8 @@ database.ref().on('value', (snapshot) => {
     playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
     playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
     playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
+    $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
+    $('#player-two-stats').text(`Wins: ${playerTwoWins} - Losses: ${playerTwoLosses}`);
   }
   if (playerOneChoice != '') {
     $('#p-one-list').css('visibility', 'hidden');
@@ -205,7 +193,7 @@ $('#name-btn').on('click', (e) => {
   e.preventDefault();
   inputVal = $('#player-name').val().trim();
   if (inputVal === '') {
-    $('#player-name').attr('placeholder', 'Please enter your name');
+    $('#player-name').attr('placeholder', 'Enter your name');
     return false;
   } else if (playerOne === '') {
     // titleCase(inputVal);

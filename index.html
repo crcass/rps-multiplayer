@@ -19,6 +19,7 @@
             <div class="game">
                 <div class="player" id="p1-div">
                     <p id="player-one">Player One</p>
+                    <p class="stats" id="player-one-stats"></p>
                     <ul class="choices" id="p-one-list">
                         <li value="Rock" img="./assets/images/p1r.png">
                             <div class="img-div">
@@ -52,6 +53,7 @@
                 </div>
                 <div class="player" id="p2-div">
                     <p id="player-two">Player Two</p>
+                    <p class="stats" id="player-two-stats"></p>
                     <ul class="choices" id="p-two-list">
                         <li value="Rock" img="./assets/images/p2r.png">
                             <div class="img-div">
@@ -77,26 +79,10 @@
                     <div id="chat-display">
                     </div>
                     <form id="chat-form">
-                        <input type="" name="" id="chat-input">
+                        <input id="chat-input">
                         <button type="submit" id="chat-btn"><i class="fas fa-arrow-up"></i></i></button>
                     </form>
                 </div>
-
-                <div id="stat-div">
-                    <h3>Statistics</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Wins</th>
-                                <th>Losses</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stats">
-                        </tbody>
-                    </table>
-                </div>
-
             </div>
         </div>
     </div>

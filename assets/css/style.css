@@ -6,6 +6,7 @@
 html, body {
   height: 100%;
   font-family: 'Oxygen', sans-serif;
+  color: #332F2E;
 }
 
 .bg {
@@ -72,6 +73,10 @@ li {
 	cursor: pointer;
 }
 
+li:hover {
+  filter: brightness(150%);
+}
+
 .img-div {
   width: 8rem;
 }
@@ -97,6 +102,7 @@ img {
 
 button {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
 }
 
 #name-btn {
@@ -105,6 +111,10 @@ button {
   padding: 0.25rem;
   background-color: #B4296D;
   border-color: #B4296D;
+}
+
+#name-btn:hover {
+  background-color: #CB385E;
 }
 
 #reset-btn {
@@ -116,11 +126,15 @@ button {
   border-color: #58B2F5;
 }
 
+#reset-btn:hover {
+  background-color: #6CC9FA;
+}
+
 .bottom {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 8rem;
-  color: #E5E5E5;
+  color: #F0F0F1;
 }
 
 #chat {
@@ -130,7 +144,7 @@ button {
 #chat-display {
 	height: 5rem;
 	width: 25rem;
-	border: 1px solid black;
+	border: 1px solid #332F2E;
 	overflow: scroll;
 	display: flex;
   flex-direction: column;
@@ -163,6 +177,10 @@ button {
   color: #fff;
   background-color: #58B2F5;
   border-color: #58B2F5;
+}
+
+#chat-btn:hover {
+  background-color: #6CC9FA;
 }
 
 #stat-div {
