@@ -137,13 +137,13 @@ database.ref().on('value', (snapshot) => {
       });
     }
     if (playerOneWins === '' || playerOneLosses === '' || playerTwoWins === '' || playerTwoLosses === '') {
-    playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
-    playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
-    playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
-    playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
-    $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
-    $('#player-two-stats').text(`Wins: ${playerTwoWins} - Losses: ${playerTwoLosses}`);
-  }
+      playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
+      playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
+      playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
+      playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
+      $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
+      $('#player-two-stats').text(`Wins: ${playerTwoWins} - Losses: ${playerTwoLosses}`);
+    }
   }
   if (playerOneChoice != '') {
     $('#p-one-list').css('visibility', 'hidden');
