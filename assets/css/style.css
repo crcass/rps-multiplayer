@@ -79,6 +79,10 @@ li:hover {
   filter: brightness(150%);
 }
 
+#selected {
+  visibility: visible !important;
+}
+
 .img-div {
   width: 8rem;
 }

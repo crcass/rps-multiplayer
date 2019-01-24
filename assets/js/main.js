@@ -37,6 +37,8 @@ let currentPlayers = [];
 
 let playerChoice = [];
 
+let choiceMade = 0;
+
 let currentImg = [];
 
 let winnerIndex;
@@ -65,6 +67,7 @@ const reset = (() => {
   database.ref().child('playerTwoImg').set('');
   currentPlayers = [];
   playerChoice = [];
+  choiceMade = 0;
   currentImg = [];
   winnerIndex = undefined;
   loserIndex = undefined;
@@ -124,7 +127,6 @@ database.ref().on('value', (snapshot) => {
     playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
     $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
 
-    
   }
   if (playerTwo != '') {
     $('#p-one-list').css('visibility', 'visible');
@@ -161,6 +163,7 @@ database.ref().on('value', (snapshot) => {
     $('#reset-btn').css('visibility', 'visible');
     $('#winner-img').attr('src', currentImg[0]);
     $('#loser-img').attr('src', currentImg[1]);
+    $('li').attr('id', '"');
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Paper')) {
     winnerIndex = playerChoice.indexOf('Paper');
     loserIndex = playerChoice.indexOf('Rock');
@@ -169,6 +172,7 @@ database.ref().on('value', (snapshot) => {
     $('#winner-img').attr('src', currentImg[winnerIndex]);
     $('#loser-img').attr('src', currentImg[loserIndex]);
     $('#loser-img').text(playerTwoChoice);
+    $('li').attr('id', '"');
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Rock');
     loserIndex = playerChoice.indexOf('Scissors');
@@ -176,6 +180,7 @@ database.ref().on('value', (snapshot) => {
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
     $('#winner-img').attr('src', currentImg[winnerIndex]);
     $('#loser-img').attr('src', currentImg[loserIndex]);
+    $('li').attr('id', '"');
   } else if (playerChoice.includes('Paper') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Scissors');
     loserIndex = playerChoice.indexOf('Paper');
@@ -183,6 +188,7 @@ database.ref().on('value', (snapshot) => {
     $('#status').text(currentPlayers[winnerIndex] + ' wins!');
     $('#winner-img').attr('src', currentImg[winnerIndex]);
     $('#loser-img').attr('src', currentImg[loserIndex]);
+    $('li').attr('id', '"');
   }
 }, (errorObject) => {
   console.log(errorObject.code);
@@ -200,44 +206,47 @@ $('#name-btn').on('click', (e) => {
     playerOne = titleCase(inputVal);
     database.ref().child('playerOne').set(playerOne);
     chatName = playerOne;
-    console.log(`Player One is ${playerOne}`);
     $('#add-name').attr('visibility', 'hidden');
     $('#player-name').val('');
   } else if (playerTwo === '') {
     playerTwo = titleCase(inputVal);
     database.ref().child('playerTwo').set(playerTwo);
     chatName = playerTwo;
-    console.log(`Player Two is ${playerTwo}`);
+    $('#p-one-list').css('visibility', 'hidden');
     $('#add-name').attr('visibility', 'hidden');
     $('#player-name').val('');
   }
 });
 
-// allows players to make their rock, paper, or scissors selection and updates their stats
-$('li').on('click', function() {
-  if (playerOneChoice === '') {
-    playerOneChoice = $(this).attr('value');
-    database.ref().child('playerOneChoice').set(playerOneChoice);
-    playerOneImg = $(this).attr('img');
-    database.ref().child('playerOneImg').set(playerOneImg);
-  } else if (playerTwoChoice === '') {
-    playerTwoChoice = $(this).attr('value');
-    database.ref().child('playerTwoChoice').set(playerTwoChoice);
-    playerTwoImg = $(this).attr('img');
-    database.ref().child('playerTwoImg').set(playerTwoImg);
-    if (currentPlayers[winnerIndex] === playerOne) {
-      playerOneWins++;
-      database.ref(`stats/${currentPlayers[winnerIndex]}`).child('wins').set(playerOneWins);
-      playerTwoLosses++;
-      database.ref(`stats/${currentPlayers[loserIndex]}`).child('losses').set(playerTwoLosses);
-    } else if (currentPlayers[winnerIndex] === playerTwo) {
-      playerTwoWins++;
-      database.ref(`stats/${currentPlayers[winnerIndex]}`).child('wins').set(playerTwoWins);
-      playerOneLosses++;
-      database.ref(`stats/${currentPlayers[loserIndex]}`).child('losses').set(playerOneLosses);
+  // allows players to make their selection, updates their stats, & prevents player one from choosing 2x
+  $('li').on('click', function() {
+    if (playerOneChoice === '') {
+      playerOneChoice = $(this).attr('value');
+      database.ref().child('playerOneChoice').set(playerOneChoice);
+      playerOneImg = $(this).attr('img');
+      database.ref().child('playerOneImg').set(playerOneImg);
+      $(this).attr('id', 'selected');
+      $('#p-two-list').css('visibility', 'hidden');
+      choiceMade = 1;
+      console.log(choiceMade);
+    } else if (choiceMade < 1) {
+      playerTwoChoice = $(this).attr('value');
+      database.ref().child('playerTwoChoice').set(playerTwoChoice);
+      playerTwoImg = $(this).attr('img');
+      database.ref().child('playerTwoImg').set(playerTwoImg);
+      if (currentPlayers[winnerIndex] === playerOne) {
+        playerOneWins++;
+        database.ref(`stats/${currentPlayers[winnerIndex]}`).child('wins').set(playerOneWins);
+        playerTwoLosses++;
+        database.ref(`stats/${currentPlayers[loserIndex]}`).child('losses').set(playerTwoLosses);
+      } else if (currentPlayers[winnerIndex] === playerTwo) {
+        playerTwoWins++;
+        database.ref(`stats/${currentPlayers[winnerIndex]}`).child('wins').set(playerTwoWins);
+        playerOneLosses++;
+        database.ref(`stats/${currentPlayers[loserIndex]}`).child('losses').set(playerOneLosses);
+      }
     }
-  }
-});
+  });
 
 // adds messages to the chat
 $('#chat-btn').on('click', (e) => {
