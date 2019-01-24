@@ -11,7 +11,6 @@ firebase.initializeApp(config);
 
 // function that automatically corrects user name case
 let titleCase = ((str) => {
-  console.log(str);
   return str.toLowerCase().split(' ').map((word) => {
     return (word.charAt(0).toUpperCase() + word.slice(1));
   }).join(' ');
@@ -137,13 +136,14 @@ database.ref().on('value', (snapshot) => {
         losses: 0
       });
     }
-
+    if (playerOneWins === '' || playerOneLosses === '' || playerTwoWins === '' || playerTwoLosses === '') {
     playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
     playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
     playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
     playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
     $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
     $('#player-two-stats').text(`Wins: ${playerTwoWins} - Losses: ${playerTwoLosses}`);
+  }
   }
   if (playerOneChoice != '') {
     $('#p-one-list').css('visibility', 'hidden');
@@ -200,12 +200,14 @@ $('#name-btn').on('click', (e) => {
     playerOne = titleCase(inputVal);
     database.ref().child('playerOne').set(playerOne);
     chatName = playerOne;
+    console.log(`Player One is ${playerOne}`);
     $('#add-name').attr('visibility', 'hidden');
     $('#player-name').val('');
   } else if (playerTwo === '') {
     playerTwo = titleCase(inputVal);
     database.ref().child('playerTwo').set(playerTwo);
     chatName = playerTwo;
+    console.log(`Player Two is ${playerTwo}`);
     $('#add-name').attr('visibility', 'hidden');
     $('#player-name').val('');
   }
