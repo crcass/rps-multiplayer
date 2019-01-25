@@ -25,6 +25,8 @@ let playerOne;
 
 let playerTwo;
 
+let nameEntered = 0;
+
 let playerOneChoice;
 
 let playerTwoChoice;
@@ -126,7 +128,6 @@ database.ref().on('value', (snapshot) => {
     playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
     playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
     $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
-
   }
   if (playerTwo != '') {
     $('#p-one-list').css('visibility', 'visible');
@@ -164,6 +165,7 @@ database.ref().on('value', (snapshot) => {
     $('#winner-img').attr('src', currentImg[0]);
     $('#loser-img').attr('src', currentImg[1]);
     $('li').attr('id', '"');
+    choiceMade = 0;
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Paper')) {
     winnerIndex = playerChoice.indexOf('Paper');
     loserIndex = playerChoice.indexOf('Rock');
@@ -173,6 +175,7 @@ database.ref().on('value', (snapshot) => {
     $('#loser-img').attr('src', currentImg[loserIndex]);
     $('#loser-img').text(playerTwoChoice);
     $('li').attr('id', '"');
+    choiceMade = 0;
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Rock');
     loserIndex = playerChoice.indexOf('Scissors');
@@ -181,6 +184,7 @@ database.ref().on('value', (snapshot) => {
     $('#winner-img').attr('src', currentImg[winnerIndex]);
     $('#loser-img').attr('src', currentImg[loserIndex]);
     $('li').attr('id', '"');
+    choiceMade = 0;
   } else if (playerChoice.includes('Paper') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Scissors');
     loserIndex = playerChoice.indexOf('Paper');
@@ -189,6 +193,7 @@ database.ref().on('value', (snapshot) => {
     $('#winner-img').attr('src', currentImg[winnerIndex]);
     $('#loser-img').attr('src', currentImg[loserIndex]);
     $('li').attr('id', '"');
+    choiceMade = 0;
   }
 }, (errorObject) => {
   console.log(errorObject.code);
@@ -206,14 +211,14 @@ $('#name-btn').on('click', (e) => {
     playerOne = titleCase(inputVal);
     database.ref().child('playerOne').set(playerOne);
     chatName = playerOne;
-    $('#add-name').attr('visibility', 'hidden');
+    $('#add-name').css('visibility', 'hidden');
     $('#player-name').val('');
   } else if (playerTwo === '') {
     playerTwo = titleCase(inputVal);
     database.ref().child('playerTwo').set(playerTwo);
     chatName = playerTwo;
     $('#p-one-list').css('visibility', 'hidden');
-    $('#add-name').attr('visibility', 'hidden');
+    $('#add-name').css('visibility', 'hidden');
     $('#player-name').val('');
   }
 });
@@ -228,7 +233,6 @@ $('#name-btn').on('click', (e) => {
       $(this).attr('id', 'selected');
       $('#p-two-list').css('visibility', 'hidden');
       choiceMade = 1;
-      console.log(choiceMade);
     } else if (choiceMade < 1) {
       playerTwoChoice = $(this).attr('value');
       database.ref().child('playerTwoChoice').set(playerTwoChoice);
