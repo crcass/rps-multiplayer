@@ -39,7 +39,9 @@ let currentPlayers = [];
 
 let playerChoice = [];
 
-let choiceMade = 0;
+let choiceMade = false;
+
+let isPlayerTwo = false;
 
 let currentImg = [];
 
@@ -69,7 +71,8 @@ const reset = (() => {
   database.ref().child('playerTwoImg').set('');
   currentPlayers = [];
   playerChoice = [];
-  choiceMade = 0;
+  choiceMade = false;
+  isPlayerTwo = false;
   currentImg = [];
   winnerIndex = undefined;
   loserIndex = undefined;
@@ -130,10 +133,12 @@ database.ref().on('value', (snapshot) => {
     $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
   }
   if (playerTwo != '') {
-    $('#p-one-list').css('visibility', 'visible');
+    if (!isPlayerTwo) {
+      $('#p-one-list').css('visibility', 'visible');
+    }
     $('#status').text(`${playerOne}, choose your weapon!`);
 
-    // if player does not exist in thee database, they are created with 0 wins & losses
+    // if player does not exist in the database, they are created with 0 wins & losses
     if (!snapshot.child(`stats/${playerTwo}`).exists()) {
       database.ref(`stats/${playerTwo}/`).set({
         wins: 0,
@@ -150,7 +155,9 @@ database.ref().on('value', (snapshot) => {
   }
   if (playerOneChoice != '') {
     $('#p-one-list').css('visibility', 'hidden');
-    $('#p-two-list').css('visibility', 'visible');
+    if (isPlayerTwo) {
+      $('#p-two-list').css('visibility', 'visible');
+    }
     $('#status').text(`${playerTwo}, choose your weapon!`);
   }
   if (playerOneChoice != '' && playerTwoChoice != '') {
@@ -165,7 +172,7 @@ database.ref().on('value', (snapshot) => {
     $('#winner-img').attr('src', currentImg[0]);
     $('#loser-img').attr('src', currentImg[1]);
     $('li').attr('id', '"');
-    choiceMade = 0;
+    choiceMade = false;
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Paper')) {
     winnerIndex = playerChoice.indexOf('Paper');
     loserIndex = playerChoice.indexOf('Rock');
@@ -175,7 +182,7 @@ database.ref().on('value', (snapshot) => {
     $('#loser-img').attr('src', currentImg[loserIndex]);
     $('#loser-img').text(playerTwoChoice);
     $('li').attr('id', '"');
-    choiceMade = 0;
+    choiceMade = false;
   } else if (playerChoice.includes('Rock') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Rock');
     loserIndex = playerChoice.indexOf('Scissors');
@@ -184,7 +191,7 @@ database.ref().on('value', (snapshot) => {
     $('#winner-img').attr('src', currentImg[winnerIndex]);
     $('#loser-img').attr('src', currentImg[loserIndex]);
     $('li').attr('id', '"');
-    choiceMade = 0;
+    choiceMade = false;
   } else if (playerChoice.includes('Paper') && playerChoice.includes('Scissors')) {
     winnerIndex = playerChoice.indexOf('Scissors');
     loserIndex = playerChoice.indexOf('Paper');
@@ -193,7 +200,7 @@ database.ref().on('value', (snapshot) => {
     $('#winner-img').attr('src', currentImg[winnerIndex]);
     $('#loser-img').attr('src', currentImg[loserIndex]);
     $('li').attr('id', '"');
-    choiceMade = 0;
+    choiceMade = false;
   }
 }, (errorObject) => {
   console.log(errorObject.code);
@@ -207,7 +214,6 @@ $('#name-btn').on('click', (e) => {
     $('#player-name').attr('placeholder', 'Enter your name');
     return false;
   } else if (playerOne === '') {
-    // titleCase(inputVal);
     playerOne = titleCase(inputVal);
     database.ref().child('playerOne').set(playerOne);
     chatName = playerOne;
@@ -217,6 +223,7 @@ $('#name-btn').on('click', (e) => {
     playerTwo = titleCase(inputVal);
     database.ref().child('playerTwo').set(playerTwo);
     chatName = playerTwo;
+    isPlayerTwo  = true;
     $('#p-one-list').css('visibility', 'hidden');
     $('#add-name').css('visibility', 'hidden');
     $('#player-name').val('');
@@ -233,7 +240,7 @@ $('#name-btn').on('click', (e) => {
       $(this).attr('id', 'selected');
       $('#p-two-list').css('visibility', 'hidden');
       choiceMade = 1;
-    } else if (choiceMade < 1) {
+    } else if (!choiceMade) {
       playerTwoChoice = $(this).attr('value');
       database.ref().child('playerTwoChoice').set(playerTwoChoice);
       playerTwoImg = $(this).attr('img');
