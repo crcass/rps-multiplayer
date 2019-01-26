@@ -10,3 +10,4 @@ Player One makes their selection while Player Two waits their turn. Neither play
 * Not mobile friendly at the moment.
 * Refreshing the page in the middle of a game can prevent player progress. For the best experience, please do not refresh the page.
 * Occasionally, the page can be slow to render or update. Patience is a virtue.
+* The server will sometimes throw an error when creating a new player, but should not affect gameplay. Pay no attention to the code behind the curtain.
