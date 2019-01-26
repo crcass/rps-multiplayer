@@ -222,3 +222,58 @@ footer a {
 footer a:hover {
   color: #F8B3FF;
 }
+
+@media screen and (max-width: 425px) {
+
+  h1 {
+    font-size: 4rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  .game {
+    display: block;
+  }
+
+  .player {
+    width: auto;
+    height: auto;
+  }
+
+  .player p {
+    font-size: 1rem;
+    min-height: 1rem;
+  }
+
+  li {
+    display: inline-block;
+  }
+
+  .img-div {
+    width: 6rem;
+  }
+
+  #results {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #add-name {
+    margin: 0rem 4rem;
+  }
+
+  #name-btn {
+    margin: 0.5rem 1rem;
+  }
+
+  #reset-btn {
+    margin: 0.5rem 10rem; 
+  }
+
+  #chat {
+    display: none;
+  }
+}
