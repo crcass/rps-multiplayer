@@ -121,7 +121,7 @@ database.ref().on('value', (snapshot) => {
   } else if (playerOne != '') {
     $('#status').text('Player Two, enter your name');
     
-    // if player does not exist in thee database, they are created with 0 wins & losses
+    // if player does not exist in the database, they are created with 0 wins & losses
     if (!snapshot.child(`stats/${playerOne}`).exists()) {
       database.ref(`stats/${playerOne}/`).set({
         wins: 0,
