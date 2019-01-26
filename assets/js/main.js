@@ -128,8 +128,10 @@ database.ref().on('value', (snapshot) => {
         losses: 0
       });
     }
-    playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
-    playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
+    if (snapshot.child(`stats/${playerOne}`).exists()) {
+      playerOneWins = snapshot.val().stats[`${playerOne}`].wins;
+      playerOneLosses = snapshot.val().stats[`${playerOne}`].losses;
+    }
     $('#player-one-stats').text(`Wins: ${playerOneWins} - Losses: ${playerOneLosses}`);
   }
   if (playerTwo != '') {
@@ -145,8 +147,10 @@ database.ref().on('value', (snapshot) => {
         losses: 0
       });
     }
-    playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
-    playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
+    if (snapshot.child(`stats/${playerTwo}`).exists()) {
+      playerTwoWins = snapshot.val().stats[`${playerTwo}`].wins;
+      playerTwoLosses = snapshot.val().stats[`${playerTwo}`].losses;
+    }
     $('#player-two-stats').text(`Wins: ${playerTwoWins} - Losses: ${playerTwoLosses}`);
     $('#add-name').css('visibility', 'hidden');
     $('#chat-form').css('visibility', 'visible');
