@@ -173,6 +173,7 @@ button {
   background-color: rgba(0, 0, 0, 0.2);
   width: 91%;
   height: 1.3rem;
+  color: #F0F0F1;
 }
 
 #chat-input::placeholder {
