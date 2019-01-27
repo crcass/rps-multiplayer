@@ -226,7 +226,7 @@ footer a:hover {
 @media screen and (max-width: 425px) {
 
   h1 {
-    font-size: 4rem;
+    font-size: 3.9rem;
   }
 
   h2 {
@@ -263,6 +263,10 @@ footer a:hover {
 
   #add-name {
     margin: 0rem 4rem;
+  }
+
+  #player-name::placeholder {
+    color: #F7DC51;
   }
 
   #name-btn {
