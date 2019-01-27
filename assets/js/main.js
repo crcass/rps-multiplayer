@@ -79,6 +79,8 @@ const reset = (() => {
   $('#player-one').empty();
   $('#player-two').empty();
   $('#add-name').css('visibility', 'visible');
+  $('#player-name').attr('placeholder', '');
+  $('#chat-input').attr('placeholder', '');
 });
 
 // database call that updates when any values are present or changed
