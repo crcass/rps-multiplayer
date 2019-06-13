@@ -2,9 +2,13 @@
 
 ![RPS - Multiplayer](/assets/images/thumbnail.jpg)
 
-## Overview
+## Technology
 
-This version of Rock, Paper, Scissors is played by two different players on different devices. Neither player can see the other's selection until the round is complete. Each player's stats persist between sessions and there is a custom built chat feature that players can use during the game.
+This app was built with [jQuery](https://jquery.com/) & [Firebase](https://firebase.google.com/)
+
+## Concept
+
+A Rock, Paper, Scissors game that can be played between users in different tabs or on different devices. I wanted to make sure that each player could only see their choices until both players had made their selection. I also wanted to inlcude a chat feature for some friendly competitive banter.
 
 ## Game Start
 
